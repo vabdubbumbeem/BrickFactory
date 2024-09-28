@@ -46,7 +46,7 @@ public:
     BrickType GetType() {return BrickType::Fire;}
     BrickMaterial GetMaterial() {return BrickMaterial::FireClay;}
     BrickSize GetSize() {return Size;}
-};
+};    
 
 class BildingBrick: public Brick
 {
@@ -70,5 +70,6 @@ int main()
 {
     FireBrick Brick0001(BrickSize::Normal);
     Brick0001.PrintPerforated();
+    int a = 0;
     return 0;
 }
