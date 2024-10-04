@@ -1,42 +1,7 @@
 #include <iostream>
+#include "parent_classes.h"
+
 using namespace std;
-
-enum class BrickSize:int
-{
-    Normal,
-    OneAndHalf,
-    Double
-};
-
-enum class BrickMaterial:int
-{
-    Clay,
-    CalciumSilicate,
-    FireClay
-};
-
-enum class BrickType:int
-{
-    Bilding,
-    Fire,
-    Facing
-};
-
-class Brick
-{
-protected:
-    bool Perforated = false;
-    BrickSize Size;
-    BrickMaterial Material;
-    BrickType Type;
-public:
-    bool IsPerforated() {return Perforated;}
-    void PrintPerforated() {if(Perforated){cout << "Brick is perforated\n";} else{cout << "Brick isn't perforated\n";}}
-    virtual BrickMaterial GetMaterial() = 0;
-    virtual BrickSize GetSize() = 0;
-    virtual BrickType GetType() = 0;
-
-};
 
 
 class FireBrick: public Brick
@@ -46,7 +11,7 @@ public:
     BrickType GetType() {return BrickType::Fire;}
     BrickMaterial GetMaterial() {return BrickMaterial::FireClay;}
     BrickSize GetSize() {return Size;}
-};    
+};
 
 class BildingBrick: public Brick
 {
@@ -68,8 +33,9 @@ public:
 
 int main()
 {
-    FireBrick Brick0001(BrickSize::Normal);
+    FireBrick Brick0001(BrickSize::OneAndHalf);
     Brick0001.PrintPerforated();
-    int a = 0;
+    cout << (int)Brick0001.GetSize() << endl;
+    cout << (int)Brick0001.GetMaterial() << endl;
     return 0;
 }
