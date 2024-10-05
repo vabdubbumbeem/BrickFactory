@@ -33,6 +33,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
+		<Unit filename="parent_classes.cpp" />
+		<Unit filename="parent_classes.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

@@ -33,8 +33,13 @@ public:
 
 int main()
 {
+    VectorBrickContainer MyContainer;
+
     FireBrick Brick0001(BrickSize::OneAndHalf);
-    Brick0001.PrintPerforated();
+    MyContainer.AddBrick(Brick0001);
+    MyContainer.SetCurrent(0);
+    MyContainer.GetCurrent().PrintPerforated();
+    //Brick0001.PrintPerforated();
     cout << (int)Brick0001.GetSize() << endl;
     cout << (int)Brick0001.GetMaterial() << endl;
     return 0;

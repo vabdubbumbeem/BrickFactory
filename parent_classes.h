@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 enum class BrickType:int
 {
@@ -31,8 +32,35 @@ protected:
 public:
     bool IsPerforated();
     void PrintPerforated();
-    virtual BrickMaterial GetMaterial() = 0;
-    virtual BrickSize GetSize() = 0;
-    virtual BrickType GetType() = 0;
+    BrickMaterial GetMaterial();
+    BrickSize GetSize();
+    BrickType GetType();
 
+};
+typedef Brick BrickPtr;
+
+class Container
+{
+protected:
+    BrickPtr *BrickStorage;
+    unsigned int Maxsize = -1;
+    unsigned int Pointer = 0;
+    unsigned int Counter = 0;
+public:
+    virtual BrickPtr GetCurrent() = 0;
+    virtual unsigned int GetCount() = 0;
+    virtual void SetCurrent(unsigned int a) = 0;
+    virtual void AddBrick(BrickPtr NewBrick) = 0;
+};
+
+class VectorBrickContainer: public Container{
+protected:
+    std::vector<BrickPtr> BrickStorage;
+public:
+    //VectorBrickContainer();
+    //~VectorBrickContainer();
+    void SetCurrent(unsigned int a);
+    void AddBrick(BrickPtr NewBrick);
+    BrickPtr GetCurrent();
+    unsigned int GetCount();
 };
