@@ -3,6 +3,17 @@
 
 using namespace std;
 
+float power(int a, int n){
+    float res = 1;
+    if(n > 0){
+        for(int i = 0; i < n; i++){res *= a;}
+        }
+    else{
+        for(int i = 0; i < -n; i++){res /= a;}
+    }
+    return res;
+}
+
 
 class FireBrick: public Brick
 {
@@ -33,14 +44,23 @@ public:
 
 int main()
 {
-    VectorBrickContainer MyContainer;
 
+        //vectorContainer test
+    VectorBrickContainer MyContainer;
     FireBrick Brick0001(BrickSize::OneAndHalf);
-    MyContainer.AddBrick(Brick0001);
+    MyContainer.AddBrick(&Brick0001);
     MyContainer.SetCurrent(0);
-    MyContainer.GetCurrent().PrintPerforated();
+    MyContainer.GetCurrent()->PrintPerforated();
+
+        //constSizeContainer test
+    ConstSizeContainer MyConstContainer(5);
+    MyConstContainer.AddBrick(&Brick0001);
+    MyConstContainer.SetCurrent(0);
+    MyConstContainer.GetCurrent()->PrintPerforated();
+
     //Brick0001.PrintPerforated();
     cout << (int)Brick0001.GetSize() << endl;
     cout << (int)Brick0001.GetMaterial() << endl;
     return 0;
+
 }

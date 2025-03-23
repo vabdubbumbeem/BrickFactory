@@ -27,6 +27,42 @@
 					<Add option="-s" />
 				</Linker>
 			</Target>
+			<Target title="sqlite3">
+				<Option output="bin/sqlite3/classBrick" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/sqlite3/" />
+				<Option object_output="obj/sqlite3/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+				</Linker>
+			</Target>
+			<Target title="123">
+				<Option output="bin/123/classBrick" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="bin/123/" />
+				<Option object_output="obj/123/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="user32" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -35,6 +71,14 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="parent_classes.cpp" />
 		<Unit filename="parent_classes.h" />
+		<Unit filename="sqlite3.dll">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
+		<Unit filename="sqlite3.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

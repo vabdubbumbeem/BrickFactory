@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "sqlite3.h"
 
 enum class BrickType:int
 {
@@ -37,13 +38,13 @@ public:
     BrickType GetType();
 
 };
-typedef Brick BrickPtr;
+typedef Brick *BrickPtr;
 
 class Container
 {
 protected:
     BrickPtr *BrickStorage;
-    unsigned int Maxsize = -1;
+    unsigned int MaxSize = 0;
     unsigned int Pointer = 0;
     unsigned int Counter = 0;
 public:
@@ -58,9 +59,25 @@ protected:
     std::vector<BrickPtr> BrickStorage;
 public:
     //VectorBrickContainer();
-    //~VectorBrickContainer();
+    ~VectorBrickContainer(){BrickStorage.clear();}
     void SetCurrent(unsigned int a);
     void AddBrick(BrickPtr NewBrick);
     BrickPtr GetCurrent();
     unsigned int GetCount();
 };
+
+class ConstSizeContainer: public Container{
+protected:
+    BrickPtr *BrickStorage;
+    unsigned int MaxSize = 0;
+    unsigned int Pointer = 0;
+    unsigned int Counter = 0;
+public:
+    ~ConstSizeContainer(){delete BrickStorage;};
+    ConstSizeContainer(unsigned int maxsize);
+    void SetCurrent(unsigned int a);
+    void AddBrick(BrickPtr NewBrick);
+    BrickPtr GetCurrent();
+    unsigned int GetCount();
+};
+

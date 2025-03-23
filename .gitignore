@@ -4,3 +4,4 @@ bin/
 obj/
 Задание.txt
 parent_classes.h.gch
+sqlite3.dll
