@@ -23,6 +23,7 @@ enum class BrickSize:int
     Double
 };
 
+//BRICK
 class Brick
 {
 protected:
@@ -33,6 +34,7 @@ protected:
 public:
     bool IsPerforated();
     void PrintPerforated();
+    void Perforate();
     BrickMaterial GetMaterial();
     BrickSize GetSize();
     BrickType GetType();
@@ -40,6 +42,36 @@ public:
 };
 typedef Brick *BrickPtr;
 
+//ITERATOR
+template<class Type> class Iterator
+{
+protected:
+    Iterator() {}
+
+public:
+    //virtual ~Iterator() {} // диструктор
+    virtual void First() = 0;
+    virtual void Next() = 0;
+    virtual bool IsDone() = 0;
+    virtual Type GetCurrent() = 0;
+};
+
+//VECTORBRICKCONTAINERITERATOR
+class VectorBrickContainerIterator : public Iterator<BrickPtr>
+{
+private:
+    const std::vector<BrickPtr> *BrickStorage;
+    std::vector<BrickPtr>::const_iterator it;
+
+public:
+    VectorBrickContainerIterator(const std::vector<BrickPtr> *brickstorage);
+    void First();
+    void Next();
+    bool IsDone();
+    BrickPtr GetCurrent();
+};
+
+//CONTAINER
 class Container
 {
 protected:
@@ -54,18 +86,22 @@ public:
     virtual void AddBrick(BrickPtr NewBrick) = 0;
 };
 
+//VECTORBRICKCONTAINER
 class VectorBrickContainer: public Container{
 protected:
     std::vector<BrickPtr> BrickStorage;
 public:
     //VectorBrickContainer();
-    ~VectorBrickContainer(){BrickStorage.clear();}
+    //~VectorBrickContainer(){BrickStorage.clear();}
     void SetCurrent(unsigned int a);
     void AddBrick(BrickPtr NewBrick);
     BrickPtr GetCurrent();
     unsigned int GetCount();
+    Iterator<BrickPtr> *MkIterator(const std::vector<BrickPtr> *brickstorage);
+    Iterator<BrickPtr> *MkIterator();
 };
 
+//CONSTSIZECONTAINER
 class ConstSizeContainer: public Container{
 protected:
     BrickPtr *BrickStorage;
@@ -80,4 +116,5 @@ public:
     BrickPtr GetCurrent();
     unsigned int GetCount();
 };
+
 

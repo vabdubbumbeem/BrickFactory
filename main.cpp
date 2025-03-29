@@ -45,22 +45,29 @@ public:
 int main()
 {
 
-        //vectorContainer test
     VectorBrickContainer MyContainer;
     FireBrick Brick0001(BrickSize::OneAndHalf);
+    FireBrick Brick0002(BrickSize::Double);
+    Brick0002.Perforate();
+
     MyContainer.AddBrick(&Brick0001);
-    MyContainer.SetCurrent(0);
-    MyContainer.GetCurrent()->PrintPerforated();
+    MyContainer.AddBrick(&Brick0002);
+    auto it = MyContainer.MkIterator();
+    it->First();
+    it->GetCurrent()->PrintPerforated();
+    it->Next();
+    it->GetCurrent()->PrintPerforated();
 
         //constSizeContainer test
+        /*
     ConstSizeContainer MyConstContainer(5);
     MyConstContainer.AddBrick(&Brick0001);
     MyConstContainer.SetCurrent(0);
     MyConstContainer.GetCurrent()->PrintPerforated();
-
+*/
     //Brick0001.PrintPerforated();
     cout << (int)Brick0001.GetSize() << endl;
-    cout << (int)Brick0001.GetMaterial() << endl;
+    cout << (int)Brick0002.GetSize() << endl;
     return 0;
 
 }
