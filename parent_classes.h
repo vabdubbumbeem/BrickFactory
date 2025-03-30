@@ -97,8 +97,21 @@ public:
     void AddBrick(BrickPtr NewBrick);
     BrickPtr GetCurrent();
     unsigned int GetCount();
-    Iterator<BrickPtr> *MkIterator(const std::vector<BrickPtr> *brickstorage);
     Iterator<BrickPtr> *MkIterator();
+};
+//CONSTSIZECONTAINERITERATOR
+class ConstSizeContainerIterator : public Iterator<BrickPtr>
+{
+private:
+    const BrickPtr *BrickStorage;
+    unsigned int Pointer = 0;
+    unsigned int Counter = 0;
+public:
+    ConstSizeContainerIterator(BrickPtr **brickstorage, unsigned int counter);
+    void First();
+    void Next();
+    bool IsDone();
+    BrickPtr GetCurrent();
 };
 
 //CONSTSIZECONTAINER
@@ -115,6 +128,42 @@ public:
     void AddBrick(BrickPtr NewBrick);
     BrickPtr GetCurrent();
     unsigned int GetCount();
+    Iterator<BrickPtr> *MkIterator();
 };
 
+//ITERATORDECORATOR
+template<class Type>
+class IteratorDecorator : public Iterator<Type>
+{
+protected:
+    Iterator<Type> *It;
+public:
+    IteratorDecorator(Iterator<Type> *it)
+    {
+        It = it;
+    }
+    virtual ~IteratorDecorator() { delete It; } // диструктор
+    void First() { It->First(); }
+    void Next() { It->Next(); }
+    bool IsDone() const { return It->IsDone(); }
+    Type GetCurrent() const { return It->GetCurrent(); }
+};
+
+//ITERATORPERFORATED
+template<class Type>
+class IteratorPerforated : public IteratorDecorator<BrickPtr>
+{
+protected:
+    Iterator<Type> *It;
+public:
+    IteratorPerforated(Iterator<BrickPtr> *it)
+    {
+        It = it;
+    }
+    virtual ~IteratorPerforated() { delete It; } // диструктор
+    void First() { It->First(); }
+    void Next() { while(!It->IsDone() && !It->GetCurrent()->IsPerforated)It->Next(); }
+    bool IsDone() const { return It->IsDone(); }
+    Type GetCurrent() const { return It->GetCurrent(); }
+};
 

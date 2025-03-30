@@ -44,30 +44,25 @@ public:
 
 int main()
 {
-
     VectorBrickContainer MyContainer;
-    FireBrick Brick0001(BrickSize::OneAndHalf);
-    FireBrick Brick0002(BrickSize::Double);
-    Brick0002.Perforate();
+    for (int i = 0; i < 30; i++){
+        MyContainer.AddBrick(new FireBrick(BrickSize::Double));
+    }
 
-    MyContainer.AddBrick(&Brick0001);
-    MyContainer.AddBrick(&Brick0002);
     auto it = MyContainer.MkIterator();
     it->First();
     it->GetCurrent()->PrintPerforated();
+    if(it->IsDone()) {cout << "true"<< endl;}
     it->Next();
+    it->GetCurrent()->Perforate();
     it->GetCurrent()->PrintPerforated();
 
-        //constSizeContainer test
-        /*
-    ConstSizeContainer MyConstContainer(5);
-    MyConstContainer.AddBrick(&Brick0001);
-    MyConstContainer.SetCurrent(0);
-    MyConstContainer.GetCurrent()->PrintPerforated();
-*/
-    //Brick0001.PrintPerforated();
-    cout << (int)Brick0001.GetSize() << endl;
-    cout << (int)Brick0002.GetSize() << endl;
+    IteratorPerforated itp(it);
+    itp->First();
+    itp->Next();
+    itp->GetCurrent()->PrintPerforated();
+
+
     return 0;
 
 }

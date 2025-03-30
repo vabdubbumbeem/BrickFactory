@@ -35,14 +35,24 @@ void VectorBrickContainer::AddBrick(BrickPtr NewBrick){BrickStorage.push_back(Ne
 
 unsigned int VectorBrickContainer::GetCount(){return Counter;}
 
-Iterator<BrickPtr> *VectorBrickContainer::MkIterator(const std::vector<BrickPtr> *brickstorage) {
-    return new VectorBrickContainerIterator(&BrickStorage);
-}
-
 Iterator<BrickPtr> *VectorBrickContainer::MkIterator() {
     return new VectorBrickContainerIterator(&BrickStorage);
 }
+//ConstSizeContainerIterator
 
+ConstSizeContainerIterator::ConstSizeContainerIterator(BrickPtr **brickstorage, unsigned int counter){
+    BrickStorage = *brickstorage;
+    Pointer = 0;
+    Counter = counter;
+}
+
+void ConstSizeContainerIterator::First() {Pointer = 0;}
+
+void ConstSizeContainerIterator::Next() {Pointer++;}
+
+bool ConstSizeContainerIterator::IsDone() {return Pointer >= Counter;}
+
+BrickPtr ConstSizeContainerIterator::GetCurrent() {return BrickStorage[Pointer];}
 
 //ConstSizeContainer
 void ConstSizeContainer::SetCurrent(unsigned int a){Pointer = a;}
@@ -53,10 +63,15 @@ void ConstSizeContainer::AddBrick(BrickPtr NewBrick){
     if(Counter < MaxSize){
         BrickStorage[Counter] = NewBrick; Counter++;
     }
+    else {std::cout << "Container is full!\n";}
 }
 
 unsigned int ConstSizeContainer::GetCount(){return Counter;}
 
 ConstSizeContainer::ConstSizeContainer(unsigned int maxsize){BrickStorage = new BrickPtr[maxsize]; MaxSize = maxsize;}
+
+Iterator<BrickPtr> *ConstSizeContainer::MkIterator() {
+    return new ConstSizeContainerIterator(&BrickStorage, Counter);
+}
 
 
