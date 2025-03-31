@@ -138,32 +138,31 @@ class IteratorDecorator : public Iterator<Type>
 protected:
     Iterator<Type> *It;
 public:
-    IteratorDecorator(Iterator<Type> *it)
-    {
-        It = it;
-    }
-    virtual ~IteratorDecorator() { delete It; } // диструктор
+    //IteratorDecorator(Iterator<Type> *it)
+    //{
+    //    It = it;
+    //}
+    //virtual ~IteratorDecorator() { delete It; } // диструктор
     void First() { It->First(); }
     void Next() { It->Next(); }
-    bool IsDone() const { return It->IsDone(); }
-    Type GetCurrent() const { return It->GetCurrent(); }
+    bool IsDone() { return It->IsDone(); }
+    Type GetCurrent() { return It->GetCurrent(); }
 };
 
 //ITERATORPERFORATED
 template<class Type>
-class IteratorPerforated : public IteratorDecorator<BrickPtr>
+class IteratorPerforated : public IteratorDecorator<Type>
 {
 protected:
     Iterator<Type> *It;
 public:
-    IteratorPerforated(Iterator<BrickPtr> *it)
-    {
+    IteratorPerforated(Iterator<BrickPtr> *it){
         It = it;
     }
-    virtual ~IteratorPerforated() { delete It; } // диструктор
-    void First() { It->First(); }
-    void Next() { while(!It->IsDone() && !It->GetCurrent()->IsPerforated)It->Next(); }
-    bool IsDone() const { return It->IsDone(); }
-    Type GetCurrent() const { return It->GetCurrent(); }
+    //~IteratorPerforated() { delete It; } // диструктор
+    void First() {It->First(); while(!It->GetCurrent()->IsPerforated()){It->Next();}}
+    void Next() {while(!It->GetCurrent()->IsPerforated() && !It->IsDone()) {It->Next();}}
+    bool IsDone() {It->IsDone();}
+    Type GetCurrent() {return It->GetCurrent();}
 };
 

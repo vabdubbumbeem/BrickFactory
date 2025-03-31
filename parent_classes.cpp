@@ -74,4 +74,17 @@ Iterator<BrickPtr> *ConstSizeContainer::MkIterator() {
     return new ConstSizeContainerIterator(&BrickStorage, Counter);
 }
 
+//ITERATORPERFORATED
+
+//IteratorPerforated::IteratorPerforated(Iterator<BrickPtr> *it) {It = it;}
+
+//void IteratorPerforated::First() { It->First(); }
+
+//void IteratorPerforated::Next() { It->Next()}
+
+//bool IteratorPerforated::IsDone() { return It->IsDone(); }
+
+//Type IteratorPerforated::GetCurrent() { return It->GetCurrent(); }
+
+//IteratorPerforated::~IteratorPerforated() { delete It; }
 

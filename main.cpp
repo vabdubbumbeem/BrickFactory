@@ -57,10 +57,24 @@ int main()
     it->GetCurrent()->Perforate();
     it->GetCurrent()->PrintPerforated();
 
-    IteratorPerforated itp(it);
-    itp->First();
-    itp->Next();
-    itp->GetCurrent()->PrintPerforated();
+    IteratorPerforated<BrickPtr> itp(it);
+
+
+    itp.First();
+
+    itp.GetCurrent()->PrintPerforated();
+
+    if(itp.IsDone()) {cout << "true"<< endl;}
+    itp.Next();
+    itp.GetCurrent()->PrintPerforated();
+    if(itp.IsDone()) {cout << "true"<< endl;}
+    itp.Next();
+    itp.GetCurrent()->PrintPerforated();
+    if(itp.IsDone()) {cout << "true"<< endl;}
+    itp.Next();
+    itp.GetCurrent()->PrintPerforated();
+    if(itp.IsDone()) {cout << "true"<< endl;}
+    //itp.GetCurrent()->PrintPerforated();
 
 
     return 0;
