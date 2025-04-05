@@ -49,31 +49,27 @@ int main()
         MyContainer.AddBrick(new FireBrick(BrickSize::Double));
     }
 
+
     auto it = MyContainer.MkIterator();
     it->First();
-    it->GetCurrent()->PrintPerforated();
-    if(it->IsDone()) {cout << "true"<< endl;}
+
     it->Next();
     it->GetCurrent()->Perforate();
-    it->GetCurrent()->PrintPerforated();
+    //it->GetCurrent()->PrintPerforated();
+    it->First();
 
-    IteratorPerforated<BrickPtr> itp(it);
 
 
-    itp.First();
+    //IteratorDouble<BrickPtr> itd(it);
+    IteratorPerforated<BrickPtr> itdp(it);
+    //IteratorPerforated<BrickPtr> itp(&itd);
 
-    itp.GetCurrent()->PrintPerforated();
+    itdp.First();
+    while(!itdp.IsDone()){
+        itdp.GetCurrent()->PrintPerforated();
 
-    if(itp.IsDone()) {cout << "true"<< endl;}
-    itp.Next();
-    itp.GetCurrent()->PrintPerforated();
-    if(itp.IsDone()) {cout << "true"<< endl;}
-    itp.Next();
-    itp.GetCurrent()->PrintPerforated();
-    if(itp.IsDone()) {cout << "true"<< endl;}
-    itp.Next();
-    itp.GetCurrent()->PrintPerforated();
-    if(itp.IsDone()) {cout << "true"<< endl;}
+        itdp.Next();
+    }
     //itp.GetCurrent()->PrintPerforated();
 
 

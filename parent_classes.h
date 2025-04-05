@@ -4,6 +4,7 @@
 
 enum class BrickType:int
 {
+    undefined=-1,
     Bilding,
     Fire,
     Facing
@@ -11,6 +12,7 @@ enum class BrickType:int
 
 enum class BrickMaterial:int
 {
+    undefined=-1,
     Clay,
     CalciumSilicate,
     FireClay
@@ -18,6 +20,7 @@ enum class BrickMaterial:int
 
 enum class BrickSize:int
 {
+    undefined=-1,
     Normal,
     OneAndHalf,
     Double
@@ -42,6 +45,15 @@ public:
 };
 typedef Brick *BrickPtr;
 
+class nullBrick: public Brick
+{
+    nullBrick(){
+        Size = BrickSize::undefined;
+        Material = BrickMaterial::undefined;
+        Type = BrickType::undefined;
+    }
+};
+
 //ITERATOR
 template<class Type> class Iterator
 {
@@ -49,7 +61,7 @@ protected:
     Iterator() {}
 
 public:
-    //virtual ~Iterator() {} // диструктор
+    virtual ~Iterator() {} // диструктор
     virtual void First() = 0;
     virtual void Next() = 0;
     virtual bool IsDone() = 0;
@@ -92,7 +104,12 @@ protected:
     std::vector<BrickPtr> BrickStorage;
 public:
     //VectorBrickContainer();
-    //~VectorBrickContainer(){BrickStorage.clear();}
+    ~VectorBrickContainer(){
+        for(auto i = BrickStorage.begin(); i < BrickStorage.end(); i++){
+            delete *i;
+        }
+        BrickStorage.clear();
+    }
     void SetCurrent(unsigned int a);
     void AddBrick(BrickPtr NewBrick);
     BrickPtr GetCurrent();
@@ -142,9 +159,9 @@ public:
     //{
     //    It = it;
     //}
-    //virtual ~IteratorDecorator() { delete It; } // диструктор
+    virtual ~IteratorDecorator() { } // деструктор
     void First() { It->First(); }
-    void Next() { It->Next(); }
+    void Next() { if(!It->IsDone()){It->Next();} }
     bool IsDone() { return It->IsDone(); }
     Type GetCurrent() { return It->GetCurrent(); }
 };
@@ -158,11 +175,79 @@ protected:
 public:
     IteratorPerforated(Iterator<BrickPtr> *it){
         It = it;
+        this->First();
     }
     //~IteratorPerforated() { delete It; } // диструктор
-    void First() {It->First(); while(!It->GetCurrent()->IsPerforated()){It->Next();}}
-    void Next() {while(!It->GetCurrent()->IsPerforated() && !It->IsDone()) {It->Next();}}
-    bool IsDone() {It->IsDone();}
+    void First() {
+        It->First();
+        while(!It->GetCurrent()->IsPerforated() && !It->IsDone()){
+            It->Next();
+        }
+    }
+    void Next() {
+        if(!It->IsDone()){
+            It->Next();
+            while(!It->IsDone()){
+                if(!It->GetCurrent()->IsPerforated() ){
+                    It->Next();
+                }
+                else{
+                    break;
+                }
+            }
+        }
+    }
+    bool IsDone() {return It->IsDone();}
     Type GetCurrent() {return It->GetCurrent();}
 };
 
+//ITERATORDOUBLE
+template<class Type>
+class IteratorDouble : public IteratorDecorator<Type>
+{protected:
+    Iterator<Type> *It;
+public:
+    IteratorDouble(Iterator<BrickPtr> *it){
+        It = it;
+        this->First();
+    }
+    void First() {It->First(); while(It->GetCurrent()->GetSize() != BrickSize::Double && !It->IsDone()) {It->Next();}}
+    void Next() {
+        if(!It->IsDone()){
+            It->Next();
+            while(!It->IsDone()){
+                if(It->GetCurrent()->GetSize() != BrickSize::Double){
+                    It->Next();
+                }
+                else{
+                    break;
+                }
+            }
+        }
+    }
+    //Next() -- illegal instruction
+    bool IsDone() {return It->IsDone();}
+    Type GetCurrent() {return It->GetCurrent();}
+};
+
+//SQLContaierIterator
+class SQLContaierIterator: public Iterator<BrickPtr>
+{
+private:
+    const BrickPtr *BrickStorage;
+    unsigned int Pointer = 0;
+    unsigned int Counter = 0;
+public:
+    SQLContaierIterator(BrickPtr **brickstorage, unsigned int counter);
+    void First();
+    void Next();
+    bool IsDone();
+    BrickPtr GetCurrent();
+};
+
+//SQLContainer
+class SQLContainer: public Container{
+protected:
+public:
+Iterator<BrickPtr> SQLContaierIterator();
+};

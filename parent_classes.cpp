@@ -1,6 +1,7 @@
 #include "parent_classes.h"
 #include <iostream>
 
+BrickSize Brick::GetSize() {return Size;}
 
 void Brick::Perforate() {
     Perforated = true;
@@ -16,15 +17,16 @@ void Brick::PrintPerforated(){
 VectorBrickContainerIterator::VectorBrickContainerIterator(const std::vector<BrickPtr> *brickstorage)
     {
         BrickStorage = brickstorage;
+        this->First();
     }
 
 BrickPtr VectorBrickContainerIterator::GetCurrent() {return *it;}
 
 void VectorBrickContainerIterator::First() {it = BrickStorage->begin();}
 
-void VectorBrickContainerIterator::Next() {it++;}
+void VectorBrickContainerIterator::Next() {if(!this->IsDone()){it++;}}
 
-bool VectorBrickContainerIterator::IsDone() {return it >= BrickStorage->end();}
+bool VectorBrickContainerIterator::IsDone() {return (it >= BrickStorage->end());}
 
 // VectorBrickContainer
 void VectorBrickContainer::SetCurrent(unsigned int a){Pointer = a;}
@@ -48,7 +50,7 @@ ConstSizeContainerIterator::ConstSizeContainerIterator(BrickPtr **brickstorage, 
 
 void ConstSizeContainerIterator::First() {Pointer = 0;}
 
-void ConstSizeContainerIterator::Next() {Pointer++;}
+void ConstSizeContainerIterator::Next() {if(!this->IsDone()){Pointer++;}}
 
 bool ConstSizeContainerIterator::IsDone() {return Pointer >= Counter;}
 
