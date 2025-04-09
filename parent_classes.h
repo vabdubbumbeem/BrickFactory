@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "sqlite3.h"
+#include <string>
 
 enum class BrickType:int
 {
@@ -235,7 +236,6 @@ class SQLContaierIterator: public Iterator<BrickPtr>
 {
 private:
     const BrickPtr *BrickStorage;
-    unsigned int Pointer = 0;
     unsigned int Counter = 0;
 public:
     SQLContaierIterator(BrickPtr **brickstorage, unsigned int counter);
@@ -248,6 +248,17 @@ public:
 //SQLContainer
 class SQLContainer: public Container{
 protected:
+char* dbPath;
+char* dbName;
+sqlite3 *db;
 public:
+SQLContainer(char* dbpath, char* dbname) {
+    dbPath = dbpath;
+    dbName = dbname;
+    if (sqlite3_open(dbPath, &db) != SQLITE_OK){
+        sqlite3_close(db);
+    }
+
+}
 Iterator<BrickPtr> SQLContaierIterator();
 };
